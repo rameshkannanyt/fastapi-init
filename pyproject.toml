@@ -1,0 +1,21 @@
+[tool]
+name = "fastapi-kickstart"
+version = "0.1.0"
+description = "A toolkit for kickstarting FastAPI projects with best practices."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/yourusername/fastapi-kickstart"
+repository = "https://github.com/yourusername/fastapi-kickstart"
+keywords = ["fastapi", "toolkit", "scaffolding", "development"]
+
+[dependencies]
+fastapi = "^0.100.0"
+uvicorn = "^0.18.0"
+
+[dev-dependencies]
+pytest = "^7.0.0"
+httpx = "^0.23.0"
+black = "^22.0.0"
+isort = "^5.10.0"
+mypy = "^0.910"

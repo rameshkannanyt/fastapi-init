@@ -1,0 +1,596 @@
+# FastAPI Kickstart Toolkit 🚀
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/fastapi-kickstart.svg)](https://badge.fury.io/py/fastapi-kickstart)
+
+A comprehensive toolkit for kickstarting FastAPI projects with enterprise-grade features, best practices, and production-ready configurations.
+
+## ✨ Features
+
+### 🏗️ **Project Scaffolding**
+- **Best-practice project structure** with organized folders and modules
+- **Template-based generation** with customizable components
+- **Multiple project types** (basic, with database, with auth, with Docker)
+- **Automatic import management** and dependency resolution
+
+### 🔐 **Authentication & Security**
+- **JWT-based authentication** with configurable expiration
+- **Password hashing** with bcrypt
+- **OAuth2 integration** ready
+- **Role-based access control** (RBAC) support
+- **CORS configuration** with customizable origins
+
+### 🗄️ **Database Integration**
+- **SQLAlchemy ORM** with async support
+- **Alembic migrations** for database versioning
+- **Multiple database support** (SQLite, PostgreSQL, MySQL)
+- **Database health checks** and connection pooling
+- **Model generation** with relationships
+
+### 🧪 **Testing & Quality**
+- **Comprehensive test setup** with pytest and pytest-asyncio
+- **Test fixtures** and utilities
+- **Coverage reporting** integration
+- **Async test support** for FastAPI endpoints
+- **Mock utilities** for external dependencies
+
+### 🐳 **Docker & Deployment**
+- **Multi-stage Dockerfile** with security best practices
+- **Docker Compose** with database and app services
+- **Health checks** and graceful shutdown
+- **Production-ready configurations**
+- **Environment variable management**
+
+### 📊 **Monitoring & Observability**
+- **Structured logging** with configurable levels
+- **Request/response monitoring** with timing
+- **Rate limiting** middleware
+- **Error tracking** and reporting
+- **Performance metrics** collection
+
+### 🔧 **Development Tools**
+- **Code formatting** with Black and isort
+- **Linting** with flake8
+- **Type checking** with mypy
+- **Pre-commit hooks** for code quality
+- **Makefile** with common development tasks
+
+### 📚 **Documentation**
+- **Automatic API documentation** (Swagger/OpenAPI)
+- **Project onboarding reports** with route analysis
+- **Environment health checks**
+- **Dependency analysis** and recommendations
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Install from PyPI
+pip install fastapi-kickstart
+
+# Install with development dependencies
+pip install fastapi-kickstart[dev]
+
+# Install with database support
+pip install fastapi-kickstart[database]
+
+# Install with monitoring support
+pip install fastapi-kickstart[monitoring]
+```
+
+### Create Your First Project
+
+```bash
+# Basic project
+fastapi-kickstart init my-api
+
+# With database and authentication
+fastapi-kickstart init my-api --with-database --with-auth
+
+# With Docker support
+fastapi-kickstart init my-api --with-docker --with-tests
+
+# Full-featured project
+fastapi-kickstart init my-api --with-database --with-auth --with-docker --with-tests
+```
+
+### Project Structure
+
+```
+my-api/
+├── app/
+│   ├── api/
+│   │   └── v1/
+│   │       ├── auth_router.py      # Authentication endpoints
+│   │       ├── health.py           # Health check endpoints
+│   │       └── router.py           # Main API router
+│   ├── core/
+│   │   ├── auth.py                 # JWT authentication logic
+│   │   ├── config.py               # Application settings
+│   │   ├── database.py             # Database configuration
+│   │   ├── logging.py              # Logging setup
+│   │   └── middleware.py           # Custom middleware
+│   ├── models/
+│   │   └── models.py               # SQLAlchemy models
+│   ├── schemas/
+│   │   └── schemas.py              # Pydantic schemas
+│   └── main.py                     # FastAPI application
+├── tests/
+│   ├── api/
+│   ├── core/
+│   └── conftest.py                 # Test configuration
+├── alembic/                        # Database migrations
+├── logs/                           # Application logs
+├── requirements.txt                # Dependencies
+├── Dockerfile                      # Docker configuration
+├── docker-compose.yml              # Docker Compose
+├── .env.example                    # Environment variables
+└── README.md                       # Project documentation
+```
+
+## 📖 Usage Guide
+
+### Basic Commands
+
+```bash
+# Initialize a new project
+fastapi-kickstart init my-project
+
+# Check environment for issues
+fastapi-kickstart env-check
+
+# Add error handling middleware
+fastapi-kickstart add-error-middleware
+
+# Set up testing framework
+fastapi-kickstart test-init
+
+# Generate onboarding report
+fastapi-kickstart onboarding-report
+
+# Set up database migrations
+fastapi-kickstart setup-database
+
+# Add Docker configuration
+fastapi-kickstart docker-setup
+
+# Add monitoring and logging
+fastapi-kickstart add-monitoring
+
+# Add rate limiting
+fastapi-kickstart add-rate-limiting
+```
+
+### Advanced Usage
+
+#### Database Setup
+
+```bash
+# Initialize with database support
+fastapi-kickstart init my-api --with-database
+
+cd my-api
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database configuration
+
+# Run migrations
+alembic upgrade head
+```
+
+#### Authentication Setup
+
+```bash
+# Initialize with authentication
+fastapi-kickstart init my-api --with-auth
+
+# The project will include:
+# - JWT token generation and validation
+# - User registration and login endpoints
+# - Password hashing with bcrypt
+# - Protected route decorators
+```
+
+#### Docker Deployment
+
+```bash
+# Initialize with Docker support
+fastapi-kickstart init my-api --with-docker
+
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build manually
+docker build -t my-api .
+docker run -p 8000:8000 my-api
+```
+
+### Configuration
+
+#### Environment Variables
+
+```bash
+# Application Settings
+APP_NAME=my-api
+VERSION=1.0.0
+DEBUG=True
+HOST=0.0.0.0
+PORT=8000
+
+# Security
+SECRET_KEY=your-super-secret-key-change-this-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Database
+DATABASE_URL=sqlite:///./app.db
+# For PostgreSQL: postgresql://user:password@localhost/my-api
+
+# CORS
+ALLOWED_ORIGINS=["http://localhost:3000","http://localhost:8080"]
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE=app.log
+
+# Rate Limiting
+RATE_LIMIT_PER_MINUTE=60
+```
+
+#### Database Configuration
+
+```python
+# app/core/config.py
+class Settings(BaseSettings):
+    database_url: str = "sqlite:///./app.db"
+    
+    # For PostgreSQL
+    # database_url: str = "postgresql://user:password@localhost/my-api"
+    
+    # For MySQL
+    # database_url: str = "mysql+pymysql://user:password@localhost/my-api"
+```
+
+## 🧪 Testing
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=app --cov-report=html
+
+# Run specific test file
+pytest tests/test_auth.py -v
+
+# Run async tests
+pytest tests/ -v --asyncio-mode=auto
+```
+
+### Test Structure
+
+```python
+# tests/test_auth.py
+import pytest
+from fastapi.testclient import TestClient
+from app.main import app
+
+client = TestClient(app)
+
+def test_register_user():
+    response = client.post("/api/v1/auth/register", json={
+        "email": "test@example.com",
+        "username": "testuser",
+        "password": "testpass123"
+    })
+    assert response.status_code == 200
+    assert "id" in response.json()
+
+def test_login_user():
+    response = client.post("/api/v1/auth/token", data={
+        "username": "testuser",
+        "password": "testpass123"
+    })
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+```
+
+## 🐳 Docker
+
+### Docker Commands
+
+```bash
+# Build image
+docker build -t my-api .
+
+# Run container
+docker run -p 8000:8000 my-api
+
+# Run with environment variables
+docker run -p 8000:8000 -e DATABASE_URL=postgresql://... my-api
+
+# Use Docker Compose
+docker-compose up -d
+```
+
+### Docker Compose Services
+
+```yaml
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/my-api
+      - SECRET_KEY=your-secret-key-here
+    depends_on:
+      - db
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=my-api
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+```
+
+## 🔧 Development
+
+### Code Quality
+
+```bash
+# Format code
+black app/ tests/
+
+# Sort imports
+isort app/ tests/
+
+# Lint code
+flake8 app/ tests/
+
+# Type checking
+mypy app/
+
+# Run all quality checks
+make format lint type-check
+```
+
+### Pre-commit Hooks
+
+```bash
+# Install pre-commit hooks
+pre-commit install
+
+# Run hooks manually
+pre-commit run --all-files
+```
+
+### Makefile Commands
+
+```bash
+# Show all available commands
+make help
+
+# Install dependencies
+make install
+
+# Run tests
+make test
+
+# Run with coverage
+make test-cov
+
+# Start development server
+make run
+
+# Start production server
+make run-prod
+
+# Clean up generated files
+make clean
+
+# Build Docker image
+make docker-build
+
+# Run Docker container
+make docker-run
+```
+
+## 📊 Monitoring & Logging
+
+### Logging Configuration
+
+```python
+# app/core/logging.py
+import logging
+import sys
+from pathlib import Path
+
+def setup_logging():
+    log_dir = Path("logs")
+    log_dir.mkdir(exist_ok=True)
+    
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler("app.log"),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
+```
+
+### Health Checks
+
+```python
+# app/api/v1/health.py
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from app.core.database import get_db
+
+router = APIRouter()
+
+@router.get("/")
+async def health_check():
+    return {"status": "healthy"}
+
+@router.get("/db")
+async def database_health_check(db: Session = Depends(get_db)):
+    try:
+        db.execute("SELECT 1")
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "database": str(e)}
+```
+
+## 🔒 Security Features
+
+### JWT Authentication
+
+```python
+# app/core/auth.py
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    return encoded_jwt
+```
+
+### Rate Limiting
+
+```python
+# app/core/rate_limit.py
+from fastapi import HTTPException, Request
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, requests_per_minute: int = 60):
+        super().__init__(app)
+        self.requests_per_minute = requests_per_minute
+        self.requests = defaultdict(list)
+    
+    async def dispatch(self, request: Request, call_next):
+        client_ip = request.client.host
+        now = time.time()
+        
+        # Clean old requests
+        self.requests[client_ip] = [
+            req_time for req_time in self.requests[client_ip]
+            if now - req_time < 60
+        ]
+        
+        # Check rate limit
+        if len(self.requests[client_ip]) >= self.requests_per_minute:
+            raise HTTPException(
+                status_code=429,
+                detail="Rate limit exceeded. Please try again later."
+            )
+        
+        # Add current request
+        self.requests[client_ip].append(now)
+        
+        return await call_next(request)
+```
+
+## 📚 API Documentation
+
+### Automatic Documentation
+
+Once your FastAPI application is running, you can access:
+
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI JSON**: http://localhost:8000/openapi.json
+
+### Example API Endpoints
+
+```python
+# Authentication endpoints
+POST /api/v1/auth/register     # Register new user
+POST /api/v1/auth/token        # Login and get JWT token
+GET  /api/v1/auth/me           # Get current user info
+
+# Health check endpoints
+GET  /api/v1/health/           # Basic health check
+GET  /api/v1/health/db         # Database health check
+
+# Root endpoint
+GET  /                         # Welcome message and API info
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/fastapi-kickstart.git
+cd fastapi-kickstart
+
+# Install in development mode
+pip install -e .[dev]
+
+# Run tests
+pytest
+
+# Run linting
+flake8 fastapi_kickstart/ tests/
+
+# Run type checking
+mypy fastapi_kickstart/
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [FastAPI](https://fastapi.tiangolo.com/) - The web framework for building APIs
+- [SQLAlchemy](https://www.sqlalchemy.org/) - The database toolkit
+- [Pydantic](https://pydantic-docs.helpmanual.io/) - Data validation using Python type annotations
+- [Alembic](https://alembic.sqlalchemy.org/) - Database migration tool
+- [Click](https://click.palletsprojects.com/) - Command line interface creation kit
+
+## 📞 Support
+
+- 📧 Email: your.email@example.com
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/fastapi-kickstart/issues)
+- 📖 Documentation: [GitHub Wiki](https://github.com/yourusername/fastapi-kickstart/wiki)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/fastapi-kickstart/discussions)
+
+---
+
+**Made with ❤️ for the FastAPI community**
