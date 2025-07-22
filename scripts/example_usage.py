@@ -1,6 +1,6 @@
 # Example usage of the FastAPI Kickstart Toolkit
 
-from fastapi_kickstart import cli
+from fastapi_init import cli
 
 def main():
     # Initialize a new FastAPI project

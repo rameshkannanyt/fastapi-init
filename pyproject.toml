@@ -1,13 +1,14 @@
 [tool]
-name = "fastapi-kickstart"
-version = "0.1.0"
+name = "fastapi-init-project"
+
+version = "0.2.2"
 description = "A toolkit for kickstarting FastAPI projects with best practices."
-authors = ["Your Name <your.email@example.com>"]
+authors = "rameshkannanyt0078@gmail.com"
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/yourusername/fastapi-kickstart"
-repository = "https://github.com/yourusername/fastapi-kickstart"
-keywords = ["fastapi", "toolkit", "scaffolding", "development"]
+homepage = "https://github.com/rameshkannanyt/fastapi-init"
+repository = "https://github.com/rameshkannanyt/fastapi-init"
+keywords = ["fastapi", "toolkit", "scaffolding", "development", "fastapi-init"]
 
 [dependencies]
 fastapi = "^0.100.0"

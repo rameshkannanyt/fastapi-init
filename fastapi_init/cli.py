@@ -1,15 +1,15 @@
 import click
 from pathlib import Path
-from fastapi_kickstart.scaffolder import ProjectScaffolder
-from fastapi_kickstart.env_checker import EnvironmentChecker
-from fastapi_kickstart.async_analyzer import AsyncAnalyzer
-from fastapi_kickstart.error_middleware import ErrorMiddleware
-from fastapi_kickstart.test_booster import TestBooster
-from fastapi_kickstart.onboarding import OnboardingReport
+from fastapi_init.scaffolder import ProjectScaffolder
+from fastapi_init.env_checker import EnvironmentChecker
+from fastapi_init.async_analyzer import AsyncAnalyzer
+from fastapi_init.error_middleware import ErrorMiddleware
+from fastapi_init.test_booster import TestBooster
+from fastapi_init.onboarding import OnboardingReport
 
 @click.group()
 def cli():
-    """FastAPI Kickstart Toolkit Command Line Interface."""
+    """FastAPI Init Toolkit Command Line Interface."""
     pass
 
 @cli.command()
@@ -84,7 +84,7 @@ def setup_database():
     alembic_dir = project_path / "alembic"
     
     if not alembic_dir.exists():
-        click.echo("Alembic not found. Please run 'fastapi-kickstart init' with --with-database first.")
+        click.echo("Alembic not found. Please run 'fastapi-init init' with --with-database first.")
         return
     
     try:

@@ -1,3 +1,77 @@
+Metadata-Version: 2.4
+Name: fastapi-init-project
+Version: 0.2.2
+Summary: A comprehensive toolkit for kickstarting FastAPI projects with best practices.
+Home-page: https://github.com/rameshkannanyt/fastapi-init
+Author: Ramesh Kannan S
+Author-email: yrameshkannanyt007@gmail.com
+Project-URL: Bug Reports, https://github.com/rameshkannanyt/fastapi-init/issues
+Project-URL: Source, https://github.com/rameshkannanyt/fastapi-init
+Project-URL: Documentation, https://github.com/rameshkannanyt/fastapi-init#readme
+Keywords: fastapi,scaffolding,toolkit,web,api,framework,fastapi-init
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Framework :: FastAPI
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: license
+Requires-Dist: fastapi>=0.100
+Requires-Dist: uvicorn[standard]
+Requires-Dist: jinja2
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: alembic>=1.12.0
+Requires-Dist: python-jose[cryptography]>=3.3.0
+Requires-Dist: passlib[bcrypt]>=1.7.4
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: email-validator>=2.0.0
+Requires-Dist: httpx
+Requires-Dist: pytest
+Requires-Dist: pytest-asyncio
+Requires-Dist: click
+Provides-Extra: dev
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.10.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: mkdocs>=1.4.0; extra == "dev"
+Requires-Dist: mkdocs-material>=9.0.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Provides-Extra: database
+Requires-Dist: psycopg2-binary>=2.9.0; extra == "database"
+Requires-Dist: asyncpg>=0.28.0; extra == "database"
+Provides-Extra: monitoring
+Requires-Dist: prometheus-client>=0.16.0; extra == "monitoring"
+Requires-Dist: structlog>=23.0.0; extra == "monitoring"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # FastAPI Init Project 🚀
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)

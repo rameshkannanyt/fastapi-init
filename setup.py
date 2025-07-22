@@ -10,14 +10,14 @@ def read_readme():
         return "A comprehensive toolkit for kickstarting FastAPI projects with best practices."
 
 setup(
-    name="fastapi-kickstart",
-    version="0.2.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    name="fastapi-init-project",
+    version="0.2.2",
+    author="Ramesh Kannan S",
+    author_email="yrameshkannanyt007@gmail.com",
     description="A comprehensive toolkit for kickstarting FastAPI projects with best practices.",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/fastapi-kickstart",
+    url="https://github.com/rameshkannanyt/fastapi-init",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -78,13 +78,13 @@ setup(
     python_requires='>=3.8',
     entry_points={
         'console_scripts': [
-            'fastapi-kickstart=fastapi_kickstart.cli:main',
+             'fastapi-init-project=fastapi_init.cli:main',
         ],
     },
-    keywords="fastapi, scaffolding, toolkit, web, api, framework",
+    keywords="fastapi, scaffolding, toolkit, web, api, framework, fastapi-init",
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/fastapi-kickstart/issues",
-        "Source": "https://github.com/yourusername/fastapi-kickstart",
-        "Documentation": "https://github.com/yourusername/fastapi-kickstart#readme",
+        "Bug Reports": "https://github.com/rameshkannanyt/fastapi-init/issues",
+        "Source": "https://github.com/rameshkannanyt/fastapi-init",
+        "Documentation": "https://github.com/rameshkannanyt/fastapi-init#readme",
     },
 )

@@ -1,14 +1,6 @@
-from pathlib import Path
-from typing import Dict, Any
-from jinja2 import Environment, DictLoader
-
-class ProjectScaffolder:
-    """Handles the creation of the project structure and files based on templates."""
-
-    def __init__(self):
-        # Initialize with enhanced templates
-        self.templates = {
-            "main.py": """from fastapi import FastAPI, Depends
+# Templates for FastAPI project scaffolding
+TEMPLATES = {
+    "main.py": """from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.config import settings
@@ -71,7 +63,8 @@ if __name__ == "__main__":
         reload=settings.debug
     )
 """,
-            "config.py": """from pydantic_settings import BaseSettings
+
+    "config.py": """from pydantic_settings import BaseSettings
 from typing import List
 import os
 
@@ -79,7 +72,7 @@ class Settings(BaseSettings):
     # App settings
     app_name: str = "{{ project_name }}"
     version: str = "1.0.0"
-    description: str = "A FastAPI application created with fastapi-kickstart"
+    description: str = "A FastAPI application created with fastapi-init"
     debug: bool = False
     host: str = "0.0.0.0"
     port: int = 8000
@@ -108,7 +101,8 @@ class Settings(BaseSettings):
 
 settings = Settings()
 """,
-            "database.py": """from sqlalchemy import create_engine
+
+    "database.py": """from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
@@ -128,7 +122,8 @@ def get_db():
     finally:
         db.close()
 """,
-            "models.py": """from sqlalchemy import Column, Integer, String, DateTime, Boolean
+
+    "models.py": """from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func
 from app.core.database import Base
 
@@ -144,7 +139,8 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 """,
-            "schemas.py": """from pydantic import BaseModel, EmailStr
+
+    "schemas.py": """from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 
@@ -177,7 +173,8 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: Optional[str] = None
 """,
-            "auth.py": """from datetime import datetime, timedelta
+
+    "auth.py": """from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -232,40 +229,18 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 """,
-            "auth_router.py": """from datetime import timedelta
+
+    "auth_router.py": """from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.auth import verify_password, create_access_token, get_current_active_user, get_password_hash
+from app.core.auth import verify_password, create_access_token, get_current_active_user
 from app.models.models import User
-from app.schemas.schemas import Token, User as UserSchema, UserCreate
+from app.schemas.schemas import Token, User as UserSchema
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
-
-@router.post("/register", response_model=UserSchema)
-async def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Check if user already exists
-    db_user = db.query(User).filter(User.email == user.email).first()
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    db_user = db.query(User).filter(User.username == user.username).first()
-    if db_user:
-        raise HTTPException(status_code=400, detail="Username already taken")
-    
-    # Create new user
-    hashed_password = get_password_hash(user.password)
-    db_user = User(
-        email=user.email,
-        username=user.username,
-        hashed_password=hashed_password
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
@@ -289,7 +264,8 @@ async def login_for_access_token(
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 """,
-            "router.py": """from fastapi import APIRouter
+
+    "router.py": """from fastapi import APIRouter
 from .health import router as health_router
 from .auth_router import router as auth_router
 
@@ -298,7 +274,8 @@ api_router = APIRouter()
 api_router.include_router(health_router, prefix="/health", tags=["health"])
 api_router.include_router(auth_router, tags=["authentication"])
 """,
-            "health.py": """from fastapi import APIRouter, Depends
+
+    "health.py": """from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 
@@ -317,7 +294,8 @@ async def database_health_check(db: Session = Depends(get_db)):
     except Exception as e:
         return {"status": "unhealthy", "database": str(e)}
 """,
-            "logging.py": """import logging
+
+    "logging.py": """import logging
 import sys
 from pathlib import Path
 from app.core.config import settings
@@ -341,7 +319,8 @@ def setup_logging():
     logging.getLogger("uvicorn").setLevel(logging.INFO)
     logging.getLogger("uvicorn.access").setLevel(logging.INFO)
 """,
-            "requirements.txt": """fastapi>=0.100.0
+
+    "requirements.txt": """fastapi>=0.100.0
 uvicorn[standard]>=0.20.0
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
@@ -355,9 +334,10 @@ pytest>=7.0.0
 pytest-asyncio>=0.21.0
 httpx>=0.24.0
 """,
-            "README.md": """# {{ project_name }}
 
-A FastAPI application created with fastapi-kickstart.
+    "README.md": """# {{ project_name }}
+
+A FastAPI application created with fastapi-init.
 
 ## Features
 
@@ -465,7 +445,8 @@ Copy `.env.example` to `.env` and configure:
 - `DEBUG`: Enable debug mode
 - `ALLOWED_ORIGINS`: CORS allowed origins
 """,
-            "Dockerfile": """FROM python:3.11-slim
+
+    "Dockerfile": """FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -495,7 +476,8 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \\
 # Run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 """,
-            "docker-compose.yml": """version: '3.8'
+
+    "docker-compose.yml": """version: '3.8'
 
 services:
   app:
@@ -526,7 +508,8 @@ services:
 volumes:
   postgres_data:
 """,
-            ".env.example": """# Application Settings
+
+    ".env.example": """# Application Settings
 APP_NAME={{ project_name }}
 VERSION=1.0.0
 DEBUG=True
@@ -552,7 +535,8 @@ LOG_FILE=app.log
 # Rate Limiting
 RATE_LIMIT_PER_MINUTE=60
 """,
-            "alembic.ini": """[alembic]
+
+    "alembic.ini": """[alembic]
 script_location = alembic
 sqlalchemy.url = sqlite:///./app.db
 
@@ -590,7 +574,8 @@ formatter = generic
 format = %(levelname)-5.5s [%(name)s] %(message)s
 datefmt = %H:%M:%S
 """,
-            "alembic_env.py": """from logging.config import fileConfig
+
+    "alembic_env.py": """from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
@@ -641,7 +626,8 @@ if context.is_offline_mode():
 else:
     run_migrations_online()
 """,
-            "pytest.ini": """[tool:pytest]
+
+    "pytest.ini": """[tool:pytest]
 asyncio_mode = auto
 testpaths = tests
 python_files = test_*.py
@@ -653,7 +639,8 @@ markers =
     integration: marks tests as integration tests
     unit: marks tests as unit tests
 """,
-            ".gitignore": """# Byte-compiled / optimized / DLL files
+
+    ".gitignore": """# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -809,7 +796,8 @@ logs/
 .DS_Store
 Thumbs.db
 """,
-            "Makefile": """# Makefile for {{ project_name }}
+
+    "Makefile": """# Makefile for {{ project_name }}
 
 .PHONY: help install test run clean docker-build docker-run
 
@@ -872,7 +860,8 @@ lint: ## Lint code with flake8
 type-check: ## Type check with mypy
 	mypy app/
 """,
-            "requirements-dev.txt": """# Development dependencies
+
+    "requirements-dev.txt": """# Development dependencies
 -r requirements.txt
 
 # Testing
@@ -893,7 +882,8 @@ mkdocs-material>=9.0.0
 # Pre-commit
 pre-commit>=3.0.0
 """,
-            ".pre-commit-config.yaml": """repos:
+
+    ".pre-commit-config.yaml": """repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -918,142 +908,86 @@ pre-commit>=3.0.0
       - id: flake8
         args: [--max-line-length=88, --extend-ignore=E203,W503]
 """,
-        }
-        self.template_env = Environment(loader=DictLoader(self.templates))
 
-    def create_project_scaffold(self, project_name: str, base_path: Path = None) -> Path:
-        """Create a new FastAPI project scaffold."""
-        if base_path is None:
-            base_path = Path.cwd()
-        
-        project_path = base_path / project_name
-        config = {"project_name": project_name}
-        
-        self.create_project_structure(project_path, config)
-        return project_path
+    "mkdocs.yml": """site_name: {{ project_name }} API Documentation
+site_description: API documentation for {{ project_name }}
+site_author: Your Name
+site_url: https://your-domain.com
 
-    def create_project_structure(self, project_path: Path, config: Dict[str, Any]):
-        """Create the project directory structure and generate files from templates."""
-        self._create_directory_structure(project_path)
-        self._generate_files(project_path, config)
-        self._setup_alembic(project_path, config)
+repo_name: your-username/{{ project_name }}
+repo_url: https://github.com/your-username/{{ project_name }}
 
-    def _create_directory_structure(self, project_path: Path):
-        """Create the project directory structure."""
-        directories = [
-            "",  # root
-            "app",
-            "app/api",
-            "app/api/v1",
-            "app/core",
-            "app/models",
-            "app/schemas",
-            "app/services",
-            "app/utils",
-            "tests",
-            "tests/api",
-            "tests/utils",
-            "tests/core",
-            "tests/models",
-            "scripts",
-            "docs",
-            "logs",
-            "alembic",
-            "alembic/versions",
-        ]
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
 
-        for dir_name in directories:
-            dir_path = project_path / dir_name
-            dir_path.mkdir(parents=True, exist_ok=True)
+nav:
+  - Home: index.md
+  - API Reference: api.md
+  - Authentication: auth.md
+  - Examples: examples.md
 
-            # Create __init__.py files for Python packages
-            if dir_name.startswith("app") or dir_name.startswith("tests"):
-                (dir_path / "__init__.py").touch()
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [app]
+          options:
+            show_source: true
+            show_root_heading: true
 
-    def _generate_files(self, project_path: Path, config: Dict[str, Any]):
-        """Generate project files from templates."""
-        file_mapping = {
-            "main.py": "app/main.py",
-            "config.py": "app/core/config.py",
-            "database.py": "app/core/database.py",
-            "auth.py": "app/core/auth.py",
-            "logging.py": "app/core/logging.py",
-            "models.py": "app/models/models.py",
-            "schemas.py": "app/schemas/schemas.py",
-            "router.py": "app/api/v1/router.py",
-            "health.py": "app/api/v1/health.py",
-            "auth_router.py": "app/api/v1/auth_router.py",
-            "requirements.txt": "requirements.txt",
-            "README.md": "README.md",
-            "Dockerfile": "Dockerfile",
-            "docker-compose.yml": "docker-compose.yml",
-            ".env.example": ".env.example",
-            "pytest.ini": "pytest.ini",
-            ".gitignore": ".gitignore",
-            "Makefile": "Makefile",
-            "requirements-dev.txt": "requirements-dev.txt",
-            ".pre-commit-config.yaml": ".pre-commit-config.yaml",
-        }
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - toc:
+      permalink: true
+""",
 
-        # Generate each file
-        for template_name, file_path in file_mapping.items():
-            try:
-                template = self.template_env.get_template(template_name)
-                content = template.render(**config)
+    "middleware.py": '''from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi import Request, HTTPException
+from fastapi.responses import JSONResponse
+import logging
 
-                full_path = project_path / file_path
-                full_path.parent.mkdir(parents=True, exist_ok=True)
+logger = logging.getLogger(__name__)
 
-                with open(full_path, "w", encoding="utf-8") as f:
-                    f.write(content)
-
-            except Exception as e:
-                raise RuntimeError(f"Failed to generate {file_path}: {e}") from e
-
-    def _setup_alembic(self, project_path: Path, config: Dict[str, Any]):
-        """Set up Alembic for database migrations."""
+class ErrorMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
         try:
-            # Create alembic.ini
-            alembic_ini_content = self.template_env.get_template("alembic.ini").render(**config)
-            alembic_ini_path = project_path / "alembic.ini"
-            with open(alembic_ini_path, "w", encoding="utf-8") as f:
-                f.write(alembic_ini_content)
-            
-            # Create alembic/env.py
-            alembic_env_content = self.template_env.get_template("alembic_env.py").render(**config)
-            alembic_env_path = project_path / "alembic" / "env.py"
-            with open(alembic_env_path, "w", encoding="utf-8") as f:
-                f.write(alembic_env_content)
-            
-            # Create alembic/script.py.mako
-            script_mako_content = """\"\"\"${message}
+            response = await call_next(request)
+            if response.status_code >= 400:
+                return self.handle_error(response)
+            return response
+        except HTTPException as exc:
+            return self.handle_http_exception(exc)
+        except Exception as exc:
+            logger.error(f"Unhandled exception: {exc}")
+            return self.handle_unexpected_exception(exc)
 
-Revision ID: ${up_revision}
-Revises: ${down_revision | comma,n}
-Create Date: ${create_date}
+    def handle_error(self, response):
+        return JSONResponse(
+            status_code=response.status_code,
+            content={"detail": getattr(response, 'body', b'').decode() if hasattr(response, 'body') else str(response)},
+        )
 
-\"\"\"
-from alembic import op
-import sqlalchemy as sa
-${imports if imports else ""}
+    def handle_http_exception(self, exc: HTTPException):
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"detail": exc.detail},
+        )
 
-# revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
-
-
-def upgrade() -> None:
-    ${upgrades if upgrades else "pass"}
-
-
-def downgrade() -> None:
-    ${downgrades if downgrades else "pass"}
-"""
-            script_mako_path = project_path / "alembic" / "script.py.mako"
-            with open(script_mako_path, "w", encoding="utf-8") as f:
-                f.write(script_mako_content)
-                
-        except Exception as e:
-            raise RuntimeError(f"Failed to setup Alembic: {e}") from e
+    def handle_unexpected_exception(self, exc):
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "An unexpected error occurred."},
+        )
+''',
+}

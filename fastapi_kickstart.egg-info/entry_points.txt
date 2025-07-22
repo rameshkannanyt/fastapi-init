@@ -1,2 +1,0 @@
-[console_scripts]
-fastapi-kickstart = fastapi_kickstart.cli:main
